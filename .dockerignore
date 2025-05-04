@@ -1,0 +1,4 @@
+venv310
+Dockerfile
+__pycache__
+*/__pycache__
