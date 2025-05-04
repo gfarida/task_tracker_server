@@ -15,6 +15,10 @@ class STaskId(BaseModel):
     ok: bool = True
     task_id: int
 
+class SStatus(BaseModel):
+    ok: bool = True
+
+
 class SUserLogin(BaseModel):
     username: str
     password: str

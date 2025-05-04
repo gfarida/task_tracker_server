@@ -1,8 +1,9 @@
 from typing import Annotated, Optional
 from fastapi import APIRouter, Depends, HTTPException, Query, status
+from fastapi.responses import JSONResponse
 from models.user_model import UserTable
 from repositories.task_repository import TaskRepository
-from schemas import STask, STaskAdd, STaskId
+from schemas import SStatus, STask, STaskAdd, STaskId
 from services.auth_service import AuthService
 
 router = APIRouter(
@@ -28,11 +29,16 @@ async def get_tasks(
     tasks = await TaskRepository.find_all(limit=limit, offset=offset, name=name, user_id=user.id)
     return tasks
 
-@router.delete("/{task_id}", status_code=status.HTTP_204_NO_CONTENT)
+@router.delete("/{task_id}")
 async def delete_task(
     task_id: int, 
     user: UserTable = Depends(AuthService.get_current_user)
-) -> None:
+) -> SStatus:
     success = await TaskRepository.delete_one(task_id, user_id=user.id)
     if not success:
-        raise HTTPException(status_code=404, detail="Task not found")
+        return JSONResponse(
+            status_code=404,
+            content={"ok": False, "detail": "Task not found"}
+        )
+
+    return SStatus(ok=True)
