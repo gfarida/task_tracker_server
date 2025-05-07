@@ -29,17 +29,29 @@
    docker build -t task_tracker_server .
    ```
 
-2. Запустите контейнер:
+2. Установите необходимые зависимости:
+    ```bash
+    pip install -r requirements.txt
+    ```
+
+3. Запустите контейнер:
 
     ```bash
     docker run -p 80:80 task_tracker_server
     ```
 
-3. Откройте в браузере:
+4. Откройте в браузере:
 
     ```bash
     http://localhost/docs
     ```
+
+## Запуск интеграционного теста
+
+```bash
+cd task_tracker_server
+pytest
+```
 
 ## Возможности API
 
